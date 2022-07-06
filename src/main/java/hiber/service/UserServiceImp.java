@@ -1,36 +1,39 @@
 package hiber.service;
 
-import hiber.dao.UserDao;
+import hiber.dao.Dao;
 import hiber.model.Car;
 import hiber.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class UserServiceImp implements UserService {
+public class UserServiceImp implements Services<User, Car> {
 
-   @Autowired
-   private UserDao userDao;
+   private Dao dao;
+
+   public UserServiceImp(@Qualifier("userDaoImp") Dao dao) {
+      this.dao = dao;
+   }
 
    @Transactional
    @Override
    public void add(User user) {
-      userDao.add(user);
+      dao.add(user);
    }
 
    @Transactional(readOnly = true)
    @Override
-   public List<User> listUsers() {
-      return userDao.listUsers();
+   public List<User> getAll() {
+      return dao.getAll();
    }
 
-   @Transactional(readOnly = true)
    @Override
-   public User getUserByCar(Car car) {
-      return userDao.getUserByCar(car);
+   public User getBy(Car obj) {
+      return (User) dao.getBy(obj);
    }
 
 }

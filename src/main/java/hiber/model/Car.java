@@ -1,9 +1,12 @@
 package hiber.model;
 
+import org.springframework.context.annotation.Scope;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "car")
+@Scope("prototype")
 public class Car {
 
     @Id
